@@ -5,11 +5,7 @@ function LoginPage() {
   return (
     <>
       <div className="flex justify-center items-center min-h-screen">
-        <AuthLayout
-          title={"login"}
-          desc="Hi, plase login to your acconunt"
-          type="login"
-        >
+        <AuthLayout title={"login"} type="login">
           <Login />
         </AuthLayout>
       </div>
