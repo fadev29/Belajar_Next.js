@@ -10,25 +10,26 @@ function AuthLayout({ title, desc, children, type }) {
           <p className="font-medium text-slate">{desc}</p>
           {children}
           {/* cara pertama */}
-          {type === "register" ? (
+          {type === "Register" ? (
+            <p className="text-sm text-center mt-2">
+              Alredy have an acconunt?{" "}
+              <Link className="text-blue-500 hover:text-blue-700" href="/login">
+                Login
+              </Link>
+            </p>
+          ) : (
             <p className="text-sm text-center mt-2">
               Dont have an acconunt?{" "}
               <Link
                 className="text-blue-500 hover:text-blue-700"
                 href="/register"
-              ></Link>
-            </p>
-          ) : (
-            <p className="text-sm text-center mt-2">
-              Alredy nhave an acconunt?{" "}
-              <Link
-                className="text-blue-500 hover:text-blue-700"
-                href="/login"
-              ></Link>
+              >
+                Register
+              </Link>
             </p>
           )}
           {/* cara kedua */}
-          <p
+          {/* <p
             className={`text-sm mt-5 text-center ${
               type === "login" ? "text-red-500" : ""
             }`}
@@ -40,15 +41,14 @@ function AuthLayout({ title, desc, children, type }) {
               <Link
                 className="text-blue-500 hover:text-blue-700"
                 href="/register"
-              ></Link>
+              > login</Link>
             )}
             {type === "login" && (
-              <Link
-                className="text-blue-500 hover:text-blue-700"
-                href="/login"
-              ></Link>
+              <Link className="text-blue-500 hover:text-blue-700" href="/login">
+                Register
+              </Link>
             )}
-          </p>
+          </p> */}
         </div>
       </div>
     </>

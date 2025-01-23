@@ -7,6 +7,6 @@
     @apply from-violet-500 via-blue-500 to-sky-500;
   }
   .bg-button {
-    @apply from-violet-500 via-blue-500 to-sky-500 hover:from-sky-500;
+    @apply from-violet-500 via-blue-500 to-sky-500 hover:from-sky-500 hover:via-blue-500 hover:to-violet-500;
   }
 }

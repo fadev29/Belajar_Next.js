@@ -4,8 +4,22 @@ import Link from "next/link";
 import React from "react";
 
 function Login() {
+  // untuk simulasi login
+  const handleLogin = (event) => {
+    // event.preventDefault(); : buat mencegah halaman refres
+    event.preventDefault();
+
+    console.log("klik Login button");
+    console.log(event.target.username.value);
+    console.log(event.target.password.value);
+    // simpen data ke localstorage
+    localStorage.setItem("username", event.target.username.value);
+    localStorage.setItem("password", event.target.password.value);
+    // redirect ke halaman produk
+    window.location.href = "/products";
+  };
   return (
-    <form>
+    <form onSubmit={handleLogin}>
       <InputFrom
         label="Username"
         name="username"
@@ -18,15 +32,9 @@ function Login() {
         type="password"
         placeholder="masukan password"
       />
-      <Button buttonclassname="bg-blue-500 hover:bg-blue-700 text-white">
+      <Button buttonclassname="bg-blue-500 hover:bg-blue-700 text-white w-full">
         Login
       </Button>
-      <p className="text-sm text-center mt-2">
-        Dont have an acconunt?{" "}
-        <Link className="text-blue-500 hover:text-blue-700" href="/register">
-          Register
-        </Link>
-      </p>
     </form>
   );
 }

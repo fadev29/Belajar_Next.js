@@ -10,8 +10,8 @@ export default function Home() {
   return (
     <>
       <div className="flex justify-center items-center h-screen gap-3">
-        {/* <LoginPage /> */}
-        <ProductPage />
+        <LoginPage />
+        {/* <ProductPage /> */}
       </div>
     </>
   );

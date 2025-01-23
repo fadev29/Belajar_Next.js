@@ -1,9 +1,16 @@
-export default function Button(props) {
+export default function Button({
+  buttonClassname,
+  type,
+  children,
+  onClick = () => {},
+}) {
   return (
     <button
-      className={`h-10 px-6 font-semibold bg-blue-500 hover:bg-blue-700 text-white w-full my-4 ${props.buttonClassname}`}
+      onClick={onClick}
+      type={type}
+      className={`h-10 px-6 font-semibold bg-blue-500 hover:bg-blue-700 text-white  my-4 ${buttonClassname}`}
     >
-      {props.children}
+      {children}
     </button>
   );
 }
