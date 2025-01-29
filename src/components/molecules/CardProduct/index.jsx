@@ -39,11 +39,13 @@ function Body({ title, desc }) {
   );
 }
 
-function Footer({ price }) {
+function Footer({ price, handleAddToCart, id }) {
   return (
     <div className="flex flex-col items-center justify-center px-5 pb-5">
       <span className="text-2xl font-semibold mb-2">{price}</span>
-      <Button buttonClassName="bg-button">Beli</Button>
+      <Button buttonClassName="bg-button" onClick={() => handleAddToCart(id)}>
+        Beli
+      </Button>
     </div>
   );
 }
