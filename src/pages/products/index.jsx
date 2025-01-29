@@ -3,7 +3,14 @@ import Image from "next/image";
 import CardProduct from "@/components/molecules/CardProduct";
 import { FaArrowCircleUp } from "react-icons/fa";
 import { data } from "@/constant/products";
-import React, { use, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  use,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 // angap data dari api/backend
 
@@ -37,12 +44,24 @@ function ProductPage() {
   }
   // useMemo : hooks buat menyimpan hasil komputasi(perhitungan) yang kompleks ke dalam cache,tujuannya biar funsi tsb ga perlu di jalani
   // -n/dihitung ulang ketika tidak ada perubahan useMemo enggak perlu useState
-  const cartTotal = useMemo(() => {
+  // const cartTotal = useMemo(() => {
+  //   return cart.reduce((total, item) => {
+  //     const product = data.find((product) => product.id === item.id);
+  //     return total + product.price * item.qty;
+  //   }, 0);
+  // }, [cart]);
+
+  // useCallback : hooks buat menyimpan fungsi ke dalam cache,tujuannya biar funsi tsb ga perlu di jalani
+  // -n/dihitung ulang ketika tidak ada perubahan
+  const calculateTotal = useCallback(() => {
     return cart.reduce((total, item) => {
       const product = data.find((product) => product.id === item.id);
       return total + product.price * item.qty;
     }, 0);
-  }, [cart]);
+  }, [cart]); // dependency array
+
+  // panggilan funsi callback buat daperin nilai total
+  const cartTotal = calculateTotal();
   useEffect(() => {
     if (cart.length > 0) {
       // const sumTotal = cart.reduce((total, item) => {
