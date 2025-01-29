@@ -3,7 +3,7 @@ import Image from "next/image";
 import CardProduct from "@/components/molecules/CardProduct";
 import { FaArrowCircleUp } from "react-icons/fa";
 import { data } from "@/constant/products";
-import React, { use, useEffect, useRef, useState } from "react";
+import React, { use, useEffect, useMemo, useRef, useState } from "react";
 
 // angap data dari api/backend
 
@@ -11,7 +11,7 @@ function ProductPage() {
   // sebutan variabel di react
   const [username, setUsername] = useState("");
   const [cart, setCart] = useState([]);
-  const [total, setTotal] = useState(0);
+  // const [total, setTotal] = useState(0);
   const footerRef = useRef();
   const [showBackToTop, setShowBackToTop] = useState(false);
   /**
@@ -35,13 +35,21 @@ function ProductPage() {
     localStorage.removeItem("cart");
     window.location.href = "/login";
   }
+  // useMemo : hooks buat menyimpan hasil komputasi(perhitungan) yang kompleks ke dalam cache,tujuannya biar funsi tsb ga perlu di jalani
+  // -n/dihitung ulang ketika tidak ada perubahan useMemo enggak perlu useState
+  const cartTotal = useMemo(() => {
+    return cart.reduce((total, item) => {
+      const product = data.find((product) => product.id === item.id);
+      return total + product.price * item.qty;
+    }, 0);
+  }, [cart]);
   useEffect(() => {
     if (cart.length > 0) {
-      const sumTotal = cart.reduce((total, item) => {
-        const product = data.find((product) => product.id === item.id);
-        return total + product.price * item.qty;
-      }, 0);
-      setTotal(sumTotal);
+      // const sumTotal = cart.reduce((total, item) => {
+      //   const product = data.find((product) => product.id === item.id);
+      //   return total + product.price * item.qty;
+      // }, 0);
+      // setTotal(sumTotal);
       // simpen data ke local stroge
       localStorage.setItem("cart", JSON.stringify(cart));
     }
@@ -161,7 +169,7 @@ function ProductPage() {
             </div>
             <div className="flex justify-between px-4 py-2 border mt-2 font-semibold rounded-lg">
               <span>Total</span>
-              <span>{total}</span>
+              <span>{cartTotal}</span>
             </div>
           </div>
         )}
