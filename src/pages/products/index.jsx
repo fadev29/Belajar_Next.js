@@ -1,8 +1,9 @@
 import Button from "@/components/atoms/Button/Button";
 import Image from "next/image";
 import CardProduct from "@/components/molecules/CardProduct";
+import { FaArrowCircleUp } from "react-icons/fa";
 import { data } from "@/constant/products";
-import React, { use, useEffect, useState } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 
 // angap data dari api/backend
 
@@ -11,6 +12,11 @@ function ProductPage() {
   const [username, setUsername] = useState("");
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
+  const footerRef = useRef();
+  const [showBackToTop, setShowBackToTop] = useState(false);
+  /**
+   * useRef : hooks untuk membuat referensi ke elemen DOM/fungsi untuk mengakses elemen dom
+   */
   //  untuk nanganin side effect/efect dari perubahan suatu data
   useEffect(() => {
     const getUsername = localStorage.getItem("username");
@@ -54,6 +60,38 @@ function ProductPage() {
       setCart([...cart, { id, qty: 1 }]);
     }
   };
+
+  useEffect(() => {
+    function handleScroll() {
+      //  ambil nilai offsetTop(posisi vertical) dari elemen footer yang direferensikan oleh footerRef
+      const footerTop = footerRef.current.offsetTop;
+
+      // ambil tinggi innerHeight dari object window (tinggi viewport tanpa toolbar & scrollbar)
+      const viewportHeight = window.innerHeight;
+
+      // ambil nilai scrolly dari object window(posisi scroll vertical (sumbu y) dilayar)
+      const scrollPosition = window.scrollY;
+
+      // logic untuk mengecek apakah posissi scroll di layar telah mencapai elemen footer
+      if (scrollPosition + viewportHeight >= footerTop) {
+        setShowBackToTop(true);
+      } else {
+        setShowBackToTop(false);
+      }
+    }
+    //  event listener buat jalanin fungsi handlerscroll setiap evet scroll terjadi
+    window.addEventListener("scroll", handleScroll);
+
+    // unmout
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [footerRef]); // di jalani  effect  ini tiap kali nilai footerRef berubah
+
+  function handleBackToTop() {
+    // scroll keatas dengan smooth
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
   return (
     <>
@@ -128,6 +166,22 @@ function ProductPage() {
           </div>
         )}
       </div>
+      {/* footer */}
+      {showBackToTop && (
+        <div
+          onClick={handleBackToTop}
+          className="fixed bottom-20 right-5 bg-green-400 p-2 rounded-full"
+        >
+          <FaArrowCircleUp className="text-white size-7" />
+        </div>
+      )}
+
+      <footer
+        ref={footerRef}
+        className="text-center p-5 bg-black text-white w-full"
+      >
+        All right reserved &copy; || by Fachri
+      </footer>
     </>
   );
 }
