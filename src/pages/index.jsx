@@ -5,11 +5,14 @@ import ProductPage from "./products";
 import { useState } from "react";
 import { useLogin } from "@/hooks/useLogin";
 import { useSelector } from "react-redux";
+import { useAtom } from "jotai";
+import { isMobileScreenAtom } from "@/atoms/atoms";
 export default function Home() {
   // anggap state ini menyimpan data yang dikirim api
   const [data, setData] = useState(true);
   const username = useLogin();
-  const { isMobileScreen } = useSelector((state) => state.screen);
+
+  const [isMobileScreen] = useAtom(isMobileScreenAtom);
   console.log("mobile", isMobileScreen);
 
   //  fungsi untuk memperbarui state
