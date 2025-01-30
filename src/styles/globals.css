@@ -4,9 +4,10 @@
 
 @layer components {
   .bg-aigen {
-    @apply from-violet-500 via-blue-500 to-sky-500;
+    @apply bg-gradient-to-r from-violet-500 via-blue-500 to-sky-500;
   }
   .bg-button {
-    @apply from-violet-500 via-blue-500 to-sky-500 hover:from-sky-500 hover:via-blue-500 hover:to-violet-500;
+    @apply bg-gradient-to-r from-violet-500 via-blue-500 to-sky-500 
+           hover:bg-gradient-to-r hover:from-sky-500 hover:via-blue-500 hover:to-violet-500;
   }
 }

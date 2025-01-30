@@ -20,21 +20,9 @@ function Login() {
   };
   return (
     <form onSubmit={handleLogin}>
-      <InputFrom
-        label="Username"
-        name="username"
-        type="text"
-        placeholder="masukan username"
-      />
-      <InputFrom
-        label="Password"
-        name="password"
-        type="password"
-        placeholder="masukan password"
-      />
-      <Button buttonclassname="bg-blue-500 hover:bg-blue-700 text-white w-full">
-        Login
-      </Button>
+      <InputFrom label="Username" name="username" type="text" placeholder="masukan username" />
+      <InputFrom label="Password" name="password" type="password" placeholder="masukan password" />
+      <Button buttonclassname={" h-full"}>Login</Button>
     </form>
   );
 }
