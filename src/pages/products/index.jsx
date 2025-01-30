@@ -6,12 +6,14 @@ import React, { use, useCallback, useEffect, useMemo, useRef, useState } from "r
 import { getProducts } from "@/services/products";
 import { getCurrentUser } from "@/services/auth";
 import { useRouter } from "next/router";
+import { useLogin } from "@/hooks/useLogin";
+import { formatCurrency } from "@/helpers/util/formatCurrency";
 
 // angap data dari api/backend
 
 function ProductPage() {
   // sebutan variabel di react
-  const [username, setUsername] = useState("");
+  const username = useLogin();
   const [cart, setCart] = useState([]);
   // const [total, setTotal] = useState(0);
   const footerRef = useRef();
@@ -39,12 +41,6 @@ function ProductPage() {
 
   //  untuk nanganin side effect/efect dari perubahan suatu data
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setUsername(getCurrentUser(token));
-    } else {
-      router.push("/login");
-    }
     // ambil data dari localStorage lalu pasing , tambahin logic || [] biar ge error ketika data localstorage kosong
     setCart(JSON.parse(localStorage.getItem("cart")) || []);
   }, []); // dependensi array: kalau kosong buat mastiin useEffect dijalani cuma sekali setiap kali halaman diload
@@ -172,7 +168,7 @@ function ProductPage() {
                     <div className="flex justify-between w-full">
                       <div className="flex flex-col justify-between ml-3">
                         <span className="font-bold text-xl">{datas?.title}</span>
-                        <span className="font-semibold">{datas?.price}</span>
+                        <span className="font-semibold">{formatCurrency(datas?.price)}</span>
                       </div>
                       <div className="flex flex-col justify-center items-center">
                         <span className="mb-1">Qty</span>
@@ -187,7 +183,7 @@ function ProductPage() {
             </div>
             <div className="flex justify-between px-4 py-2 border mt-2 font-semibold rounded-lg">
               <span>Total</span>
-              <span>{cartTotal}</span>
+              <span>{formatCurrency(cartTotal)}</span>
             </div>
           </div>
         )}

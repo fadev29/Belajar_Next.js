@@ -1,4 +1,5 @@
 import Button from "@/components/atoms/Button/Button";
+import { formatCurrency } from "@/helpers/util/formatCurrency";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -43,7 +44,7 @@ function Body({ title, desc }) {
 function Footer({ price, handleAddToCart, id }) {
   return (
     <div className="flex flex-col items-center justify-end px-5 pb-5 mt-auto w-full">
-      <span className="text-2xl font-semibold mb-2">{price}</span>
+      <span className="text-2xl font-semibold mb-2">{formatCurrency(price)}</span>
       <Button buttonClassname={"w-full"} onClick={() => handleAddToCart(id)}>
         Beli
       </Button>

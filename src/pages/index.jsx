@@ -3,6 +3,7 @@ import Image from "next/image";
 import LoginPage from "./login";
 import ProductPage from "./products";
 import { useEffect, useState } from "react";
+import { useLogin } from "@/hooks/useLogin";
 export default function Home() {
   // anggap state ini menyimpan data yang dikirim api
   const [data, setData] = useState(true);
@@ -11,6 +12,7 @@ export default function Home() {
     height: 0,
     mobile: false,
   });
+  const username = useLogin();
   /**
    * useState : hooks react untuk membuat state ke functional component
    * State : variabel untuk menyimpan data
@@ -59,27 +61,17 @@ export default function Home() {
 
   return (
     <>
-      <div
-        className={`flex flex-col justify-center items-center h-screen gap-3 ${
-          data ? "bg-black" : "bg-white"
-        }`}
-      >
+      <div className={`flex flex-col justify-center items-center h-screen gap-3 ${data ? "bg-black" : "bg-white"}`}>
         {data ? (
           <h1 className="text-6xl  font-bold bg-black text-white p-8">Data</h1>
         ) : (
           <h1 className="text-6xl font-bold bg-blue-500 p-8">updated data</h1>
         )}
-        {isMobile ? (
-          <p className="text-red-600">ini ukuran mobile</p>
-        ) : (
-          <p className="text-red-600"></p>
-        )}
-        <button
-          onClick={handleCange}
-          className="mt-4 p-4 bg-blue-500  text-white font-bold rounded"
-        >
+        {isMobile ? <p className="text-red-600">ini ukuran mobile</p> : <p className="text-red-600"></p>}
+        <button onClick={handleCange} className="mt-4 p-4 bg-blue-500  text-white font-bold rounded">
           change
         </button>
+        <p className="text-black text-5xl text-center">{username}</p>
       </div>
     </>
   );
