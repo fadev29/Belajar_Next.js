@@ -11,11 +11,11 @@ import { formatCurrency } from "@/helpers/util/formatCurrency";
 
 // angap data dari api/backend
 
-function ProductPage() {
+function ProductPage({ data }) {
   // sebutan variabel di react
   const username = useLogin();
   const [cart, setCart] = useState([]);
-  // const [total, setTotal] = useState(0);
+  // const [total, setTotal] = useState(0); // ssr udah engak perlu ini
   const footerRef = useRef();
   const [showBackToTop, setShowBackToTop] = useState(false);
 
@@ -23,21 +23,8 @@ function ProductPage() {
    * useRef : hooks untuk membuat referensi ke elemen DOM/fungsi untuk mengakses elemen dom
    */
 
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
   const router = useRouter();
-
-  //  buat ngambil data API
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const data = await getProducts();
-        setData(data.slice(0, 8));
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchProducts();
-  }, []);
 
   //  untuk nanganin side effect/efect dari perubahan suatu data
   useEffect(() => {
@@ -65,7 +52,7 @@ function ProductPage() {
   // -n/dihitung ulang ketika tidak ada perubahan
   const calculateTotal = useCallback(() => {
     return cart.reduce((total, item) => {
-      const product = data.find((product) => product.id === item.id);
+      const product = data?.find((product) => product.id === item.id);
       return total + product?.price * item.qty;
     }, 0);
   }, [cart]); // dependency array
@@ -200,6 +187,24 @@ function ProductPage() {
       </footer>
     </>
   );
+}
+//  fungsi untuk mengambil data di sisi server sebelum akhir nya  di render ke html cocok untuk data data
+export async function getServerSideProps() {
+  //  cara pertama pemanggilan service satu persatu
+  try {
+    // cara pertama untuk memanggil service satu persatu
+    const products = await getProducts();
+    // cara kedua kalo mau manggil beberapa service sekaligus pake promise
+
+    const sliceProduct = products.slice(0, 8);
+    return {
+      props: {
+        data: sliceProduct || [],
+      },
+    };
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export default ProductPage;
