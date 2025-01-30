@@ -4,6 +4,8 @@ import CardProduct from "@/components/molecules/CardProduct";
 import { FaArrowCircleUp } from "react-icons/fa";
 import React, { use, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getProducts } from "@/services/products";
+import { getCurrentUser } from "@/services/auth";
+import { useRouter } from "next/router";
 
 // angap data dari api/backend
 
@@ -14,11 +16,13 @@ function ProductPage() {
   // const [total, setTotal] = useState(0);
   const footerRef = useRef();
   const [showBackToTop, setShowBackToTop] = useState(false);
+
   /**
    * useRef : hooks untuk membuat referensi ke elemen DOM/fungsi untuk mengakses elemen dom
    */
 
   const [data, setData] = useState([]);
+  const router = useRouter();
 
   //  buat ngambil data API
   useEffect(() => {
@@ -35,9 +39,11 @@ function ProductPage() {
 
   //  untuk nanganin side effect/efect dari perubahan suatu data
   useEffect(() => {
-    const getUsername = localStorage.getItem("username");
-    if (getUsername) {
-      setUsername(getUsername);
+    const token = localStorage.getItem("token");
+    if (token) {
+      setUsername(getCurrentUser(token));
+    } else {
+      router.push("/login");
     }
     // ambil data dari localStorage lalu pasing , tambahin logic || [] biar ge error ketika data localstorage kosong
     setCart(JSON.parse(localStorage.getItem("cart")) || []);
@@ -46,10 +52,9 @@ function ProductPage() {
 
   // event handler untuk menjalankan fungsi logout dan menghapus data username
   function handlerLogout() {
-    localStorage.removeItem("username");
-    localStorage.removeItem("password");
+    localStorage.removeItem("token");
     localStorage.removeItem("cart");
-    window.location.href = "/login";
+    router.push("/login");
   }
   // useMemo : hooks buat menyimpan hasil komputasi(perhitungan) yang kompleks ke dalam cache,tujuannya biar funsi tsb ga perlu di jalani
   // -n/dihitung ulang ketika tidak ada perubahan useMemo enggak perlu useState
