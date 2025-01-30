@@ -8,6 +8,7 @@ import { getCurrentUser } from "@/services/auth";
 import { useRouter } from "next/router";
 import { useLogin } from "@/hooks/useLogin";
 import { formatCurrency } from "@/helpers/util/formatCurrency";
+import { revalidatePath } from "next/cache";
 
 // angap data dari api/backend
 
@@ -188,12 +189,12 @@ function ProductPage({ data }) {
     </>
   );
 }
-//  SSG (static site generation) : teknik yang merender halaman pada saat proses build time(npm run dev)
-// dan halaman websitenya biasa nya di chace jadi ketika user balik lagi ke halaman tersebut proses redernya lebih cepat
-// teknik ini khusus web datanya statis/hardcode/datanya tidak berubah
-
-// build time : proses penyimpanan aplikasi disissi server saat di deploy
-// run time : proses setelah build dimaan aplikasi dijalankan di sisi server/browser
+/**
+ *
+ * ISR (inceremental static generation) : teknik menggabungkan ssr dan ssg
+ * dimana halaman akan ditampilkan secara statis namun datanya bisa diupdate secara dinamis
+ * jika da perubahan
+ */
 export async function getStaticProps() {
   //  cara pertama pemanggilan service satu persatu
   try {
@@ -206,6 +207,7 @@ export async function getStaticProps() {
       props: {
         data: sliceProduct || [],
       },
+      revalidate: 60,
     };
   } catch (error) {
     console.log(error);
