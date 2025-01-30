@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { useLogin } from "@/hooks/useLogin";
 import { formatCurrency } from "@/helpers/util/formatCurrency";
 import { revalidatePath } from "next/cache";
+import { useDispatch, useSelector } from "react-redux";
 
 // angap data dari api/backend
 
@@ -19,7 +20,8 @@ function ProductPage({ data }) {
   // const [total, setTotal] = useState(0); // ssr udah engak perlu ini
   const footerRef = useRef();
   const [showBackToTop, setShowBackToTop] = useState(false);
-
+  const { isLargeScreen } = useSelector((state) => state.screen);
+  console.log("dekstop", isLargeScreen);
   /**
    * useRef : hooks untuk membuat referensi ke elemen DOM/fungsi untuk mengakses elemen dom
    */
@@ -118,6 +120,11 @@ function ProductPage({ data }) {
     <>
       <div className="flex justify-between items-center bg-black text-white font-bold px-5 py-4">
         <h1 className="text-xl">Hi, {username}</h1>
+        {isLargeScreen ? (
+          <p className="text-white font-bold text-center">dekstop</p>
+        ) : (
+          <p className="text-white text-center font-bold">mobile</p>
+        )}
         <Button buttonClassname={"bg-red-500 hover:bg-red-700"} onClick={handlerLogout}>
           Logout
         </Button>
@@ -207,7 +214,7 @@ export async function getStaticProps() {
       props: {
         data: sliceProduct || [],
       },
-      revalidate: 60,
+      revalidate: 60, // fungsi untuk merefres data
     };
   } catch (error) {
     console.log(error);
