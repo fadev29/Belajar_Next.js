@@ -2,7 +2,7 @@ import Button from "@/components/atoms/Button/Button";
 import InputFrom from "@/components/molecules/InputFrom";
 import { login } from "@/services/auth";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/compat/router";
 import React, { useState } from "react";
 
 const Login = () => {
@@ -21,7 +21,7 @@ const Login = () => {
       const res = await login(paylod);
       if (res.status) {
         localStorage.setItem("token", res.token);
-        router.push("/products");
+        window.location.href = "/products";
       } else {
         console.log("login error", res.error.response.data);
         setErorLogin(res.error.response.data);

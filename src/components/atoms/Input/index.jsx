@@ -1,6 +1,6 @@
 import React from "react";
 
-function Input({ type, placeholder, name, id }) {
+function Input({ type, placeholder, name, id, onChange }) {
   return (
     <input
       type={type}
@@ -8,6 +8,7 @@ function Input({ type, placeholder, name, id }) {
       placeholder={placeholder}
       name={name}
       id={id}
+      onChange={onChange}
     />
   );
 }
